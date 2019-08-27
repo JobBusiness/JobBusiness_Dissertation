@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- code adapted from http://www.gadgetsaint.com/tips/rounded-corners-views-layouts-android/#.XStRIOgzbIU-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape
+            android:shape="rectangle">
+            <stroke
+                android:width="2dp"
+                android:color="#d3d3d3" />  <!--87ceeb-->
+
+            <corners
+                android:radius="20dp" />
+
+            <padding
+                android:left="10dp"
+                android:top="5dp"
+                android:right="10dp"
+                android:bottom="5dp">
+            </padding>
+        </shape>
+    </item>
+</layer-list>
+

@@ -1,0 +1,94 @@
+<resources>
+    <string name="app_name">JobBusiness_Dissertation</string>
+    <string name="action_settings">Settings</string>
+
+
+<!--String include within menu_main.xml layout start here-->
+    <string name="refresh">Refresh</string>
+    <string name="exit">Exit</string>
+    <string name="logout">Logout</string>
+<!--String include within menu_main.xml layout end here-->
+
+
+<!--String implement to Content description of image mobile application logo (all page)-->
+    <string name="contentDescription">JobBussiness Brunei</string>
+
+
+<!--String included within activity_main.xml layout start here-->
+    <!--activity_main.xml-->
+    <string name="menu_text">Menu</string>
+    <string name="welcomeScreenLogo">Application Logo</string>
+    <string name="btn_two">ASD</string>
+
+    <!--String implement to activty_footer.xml-->
+    <string name="footerText">Copyright 2019</string>
+
+    <!--string implement to activity_header.xml (layout and landscape) include in activity.main.xml-->
+    <string name="loginPage">Log in</string>
+    <string name="signupPage">Sign up</string>
+
+    <!--String implement to activity_main.xml-->
+    <string name="About">About</string>
+    <string name="Jobhelp">Job Help</string>
+    <string name="FindJob">Find Job</string>
+    <string name="Curiculumvitue">Curiculum Vitue</string>
+    <string name="title">Navigation Menu</string>
+<!--String included within activity_main.xml layout end here-->
+
+
+<!--String included within activity_login.xml layout start here (Both landscape and layout)-->
+    <!--Button string-->
+    <string name="loginButton">Log in</string>
+    <!--Edit text hint string-->
+    <string name="loginHint_Password">password</string>
+    <string name="loginHint_Username">username</string>
+    <string name="loginHint_Email">email</string>
+    <!--passowrd hide and show string-->
+    <string name="loginPasswordshow">Show password</string>
+    <string name="loginPasswordhide">Hide password</string>
+    <!--password forget string-->
+    <string name="passwordForget">Password Forget</string>
+    <!--Toast string-->
+    <string name="authentication_success">Successfully Login</string>
+    <!--TextView clickable link-->
+    <string name="login_signupOption">Don\'t have account | Sign up</string>
+    <!--String for textView with login circular progress bar-->
+    <string name="login_Success_Message">Please wait, your account is now log in.</string>
+<!--String included within activity_login.xml end here-->
+
+<!--String included within activity_password_reset.xml layout start here-->
+    <string name="resetPassword">Reset Password</string>
+    <string name="resetHint_Email">Enter your email</string>
+    <string name="message">Enter your email address. Clikc on the link to reset your assword</string>
+    <!--String for button-->
+    <string name="resetButton">Send Email</string>
+<!--String included within activity_password_reset.xml layout end here-->
+
+
+<!--String included within activity_signup.xml layout start here-->
+    <!--String for button-->
+    <string name="signupButton">Sign up</string>
+    <!--String for Edit text hint-->
+    <string name="signupHint_Email">email</string>
+    <string name="signupHint_Password">password</string>
+    <string name="signupHint_Username">username</string>
+    <string name="signuphint_Company">company</string>
+    <!--String for TextView clickable link-->
+    <string name="signup_loginOption">Already have account | Log in</string>
+    <!--String for Password show and Password hide-->
+    <string name="signupPasswordshow">Show password</string>
+    <string name="signupPasswordhide">Hide password</string>
+    <!--String for custom toast-->
+    <string name="customToast_Success">Your account is successfully registered</string>
+    <!--String for TextView below radio group-->
+    <string name="signup_Title">Sign up as :</string>
+    <!--String for radio button -->
+    <string name="Jobseeker">Jobseeker</string>
+    <string name="Employee">Employee</string>
+    <!--String for toast-->
+    <string name="authentication_failed">Failed to authenticate</string>
+    <!--String for textview with signup circular progress bar-->
+    <string name="signup_Success_Message">Please wait, your account is now registering.</string>
+<!--String included within activity_signup.xml layout end here-->
+
+</resources>

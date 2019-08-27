@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "83737436021",
+    "firebase_url": "https://jobbusinessdissertation-20481.firebaseio.com",
+    "project_id": "jobbusinessdissertation-20481",
+    "storage_bucket": "jobbusinessdissertation-20481.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:83737436021:android:d459ea27b236d3f1",
+        "android_client_info": {
+          "package_name": "com.example.jobbusiness_dissertation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "83737436021-49i4es1oog4q8025n140m4t0li1pbahs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jobbusiness_dissertation",
+            "certificate_hash": "a7edff96250a35907444f0886f02ad11ac8b9472"
+          }
+        },
+        {
+          "client_id": "83737436021-e9atspitfuc1gijl093ut771vrd1qc4c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiBXCz_e1PNOkpJneI1Sj5v0x8qdgO5ow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "83737436021-e9atspitfuc1gijl093ut771vrd1qc4c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

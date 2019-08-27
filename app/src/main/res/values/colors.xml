@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="colorSecondary">#87ceeb</color>
+
+    <!-- Color applied to mobile status bar colour-->
+    <color name="statusBar">#4f96d8</color>
+
+
+    <!--Color applied to toolbar background colour -->
+    <color name="backgroundToolbar">#51A0D5</color>
+    <color name="header">#44D1D1D1</color>
+    <color name="colorMenuButton">#ffffff</color>
+
+
+    <!--Color applied to Welcome screen.xml and activity_main.xml color-->
+    <color name="mainColor">#fffafa</color>
+    <color name="signInLogIn_color">#ffffff</color>
+
+    <!--Belong to drawable\scroll_track.xml-->
+    <color name="scrollview_lightGrey">#dedede</color>
+
+    <!--Main menu colour  7c4dff-->
+
+    <!--Color applied to styles.xml\colorAccent-->
+    <color name="Grey">#808080</color>
+
+    <!--Color applied to activity_signup.xml and activity_login.xml (Layout and landscape)-->
+    <color name="link_Blue">#0000FF</color>
+    <color name="Unlink_black">#000000</color>
+
+
+    <color name="black">#000000</color>
+</resources>

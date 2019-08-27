@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/mainColor"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
+
+        <!--code adapted from https://android.jlelse.eu/scrolling-behavior-for-appbars-in-android-41aff9c5c468-->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/backgroundToolbar"
+            app:layout_scrollFlags="scroll">
+            <!--Code adapted from https://www.viralandroid.com/2016/01/android-button-with-icon-and-text.html-->
+            <!--Borderless button code adapted from https://developer.android.com/guide/topics/ui/controls/button-->
+            <!--code adapted from https://www.youtube.com/watch?v=LOcD1evBcSA-->
+            <Button
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@color/backgroundToolbar"
+                android:drawableTop="@drawable/menu_icon"
+                android:includeFontPadding="false"
+                android:paddingTop="2dp"
+                android:text="@string/menu_text"
+                android:textColor="@color/colorMenuButton"
+                android:textSize="12sp">
+            </Button>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!--ScrollView layout start after toolbar-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        style="@style/scrollbar"
+        android:layout_below="@+id/appBarLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!--code adapted from https://medium.com/@mujtahidah/add-image-logo-inside-toolbar-android-49e0c187fe4f -->
+            <!--image background start here ?attr/actionBarSize  app:theme="@style/ThemeOverlay.AppCompat.Dark" app:popupTheme="@style/AppTheme.PopupOverlay"-->
+            <!--Background mobile application logo-->
+            <LinearLayout
+                android:id="@+id/background_image"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <include layout="@layout/activity_header"/>
+            </LinearLayout>
+
+            <!--Gridlayout of the mainmenu page-->
+            <GridLayout
+                android:id="@+id/gridLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:columnCount="1"
+                android:rowCount="4">
+                <!--CardView One-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewOne"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardPreventCornerOverlap="true"
+                    app:cardMaxElevation="3dp">
+                    <!--Container one-->
+                    <LinearLayout
+                        android:id="@+id/btn_one"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/mainmenu_radius"
+                        android:padding="5dp"
+                        android:gravity="center_vertical">
+                        <!--Elements inside container one-->
+                        <ImageView
+                            android:layout_width="68dp"
+                            android:layout_height="68dp"
+                            android:layout_marginStart="12dp"
+                            android:background="@drawable/menu_image_circlebackground"
+                            android:padding="3dp"
+                            android:src="@drawable/ic_help" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-smallcaps"
+                            android:text="@string/FindJob"
+                            android:textAlignment="center"
+                            android:textColor="#000000"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!--CardView Two-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewTwo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="23dp"
+                    android:layout_margin="12dp"
+                    app:cardElevation="3dp">
+
+                    <LinearLayout
+                        android:id="@+id/btn_two"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/mainmenu_radius"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="68dp"
+                            android:layout_height="68dp"
+                            android:layout_marginStart="12dp"
+                            android:background="@drawable/menu_image_circlebackground"
+                            android:padding="3dp"
+                            android:src="@drawable/ic_help" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-smallcaps"
+                            android:text="@string/FindJob"
+                            android:textAlignment="center"
+                            android:textColor="#000000"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewThree"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    app:cardCornerRadius="23dp"
+                    app:cardElevation="3dp">
+
+                    <LinearLayout
+                        android:id="@+id/btn_three"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/mainmenu_radius"
+                        android:padding="5dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="68dp"
+                            android:layout_height="68dp"
+                            android:layout_marginStart="12dp"
+                            android:background="@drawable/menu_image_circlebackground"
+                            android:padding="3dp"
+                            android:src="@drawable/ic_help" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-smallcaps"
+                            android:text="@string/FindJob"
+                            android:textAlignment="center"
+                            android:textColor="#000000"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewFour"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    app:cardCornerRadius="23dp"
+                    app:cardElevation="3dp">
+
+                    <LinearLayout
+                        android:id="@+id/btn_four"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/mainmenu_radius"
+                        android:padding="5dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="68dp"
+                            android:layout_height="68dp"
+                            android:layout_marginStart="12dp"
+                            android:background="@drawable/menu_image_circlebackground"
+                            android:padding="3dp"
+                            android:src="@drawable/ic_help" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-smallcaps"
+                            android:gravity="center"
+                            android:text="@string/FindJob"
+                            android:textAlignment="center"
+                            android:textColor="#000000"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </GridLayout>
+
+            <!--Footer start here-->
+            <LinearLayout
+                android:id="@+id/footerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="25dp">
+                <include layout="@layout/activity_footer"/>
+            </LinearLayout>
+            <!--include layout="@layout/content_main" -->
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
+
+    <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@android:drawable/ic_dialog_email" -->
+
