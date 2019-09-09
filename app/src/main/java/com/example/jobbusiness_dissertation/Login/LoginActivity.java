@@ -118,7 +118,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         firebaseSetup();
         firebaseAuthentication = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("Jobseeker");
+        databaseReference = firebaseDatabase.getReference("Jobseeker");//maybe login the job seeker
 
         //Checkbox (initiate)
         showhidepassword = findViewById(R.id.login_passwordShowHide);

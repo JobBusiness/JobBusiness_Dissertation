@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         if (v == buttonOne ) {
-            Intent nav = new Intent(getApplicationContext(), WelcomeActivity.class);
+            Intent nav = new Intent(MainActivity.this, SearchActivity.class);
             startActivity(nav);
         }
         else if (v == buttonTwo) {

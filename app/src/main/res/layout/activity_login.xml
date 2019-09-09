@@ -78,14 +78,17 @@
     <!--app:layout_constraintBottom_toTopOf=""-->
 
     <!--Pop up message background start here-->
+     <!--Background-->
     <LinearLayout
-        android:visibility="invisible"
         android:id="@+id/linear_background_popup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#CF000000"
         android:orientation="vertical"
-        android:background="#CF000000" />
-
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+    <!--Window background-->
     <LinearLayout
         android:visibility="invisible"
         android:id="@+id/linear_window_popup"
@@ -166,15 +169,6 @@
                     android:textStyle="bold" />
         </RelativeLayout>
     </LinearLayout>
-
-
-
-
-
-
-
-
-
 
 
 
@@ -383,6 +377,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/login_Button"
             android:layout_marginTop="21dp"
+            android:fontFamily="sans-serif"
             android:clickable="true"
             android:focusable="true"
             android:linksClickable="true"

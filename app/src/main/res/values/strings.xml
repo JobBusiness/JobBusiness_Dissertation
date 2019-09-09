@@ -87,8 +87,14 @@
     <string name="Employee">Employee</string>
     <!--String for toast-->
     <string name="authentication_failed">Failed to authenticate</string>
+
+
     <!--String for textview with signup circular progress bar-->
     <string name="signup_Success_Message">Please wait, your account is now registering.</string>
-<!--String included within activity_signup.xml layout end here-->
+    <string name="search">Search Job</string>
+    <string name="searchHint">Search for Job</string>
+    <string name="textCardView">Text View</string>
+    <string name="filterBy">Filter</string>
+    <!--String included within activity_signup.xml layout end here-->
 
 </resources>

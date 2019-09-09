@@ -59,7 +59,9 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <include layout="@layout/activity_header"/>
+
             </LinearLayout>
 
             <!--Gridlayout of the mainmenu page-->
@@ -70,6 +72,7 @@
                 android:paddingTop="10dp"
                 android:columnCount="1"
                 android:rowCount="4">
+
                 <!--CardView One-->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardViewOne"

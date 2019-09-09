@@ -17,7 +17,7 @@
 
 
     <!--Color applied to Welcome screen.xml and activity_main.xml color-->
-    <color name="mainColor">#fffafa</color>
+    <color name="mainColor">#FFFAFA</color>
     <color name="signInLogIn_color">#ffffff</color>
 
     <!--Belong to drawable\scroll_track.xml-->

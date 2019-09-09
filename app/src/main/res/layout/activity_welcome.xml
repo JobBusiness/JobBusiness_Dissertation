@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@color/mainColor"
+    android:background="@color/colorPrimary"
     tools:context=".WelcomeActivity">
 
     <ImageView
         android:id="@+id/welcomescreen_Logo"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="90dp"
         android:contentDescription="@string/welcomeScreenLogo"
         android:src="@drawable/applogo"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -29,13 +29,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/welcomescreen_Logo" />
-
-    <!--<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/welcomescreen"
-        android:text="@string/welcomesc">
-    </TextView>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

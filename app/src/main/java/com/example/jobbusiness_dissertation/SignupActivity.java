@@ -7,14 +7,18 @@ import androidx.appcompat.app.AppCompatActivity;
 //import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 //import android.graphics.BitmapFactory;
 import android.graphics.Color;
 //import android.os.AsyncTask;
 import android.os.Bundle;
+import android.renderscript.ScriptGroup;
+import android.text.Editable;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.LinkMovementMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -26,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -56,9 +61,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 
 
 //Password and email validation
@@ -67,6 +70,7 @@ import java.util.regex.Pattern;
 
 //import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 
+
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
 
     RadioButton jobseeker, employee;
@@ -74,6 +78,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     //Toolbar home button
     private Button backButton;
+    AlertDialog dialog;
 
 
     /*
@@ -98,8 +103,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 */
     private EditText employeeEmail,employeePassword, employeeUsername, employeeCompany;
     private Button employeeSignupButton;
-    private CheckBox employeeShowHidePassword;
+   //private CheckBox employeeShowHidePassword;
     private LinearLayout employeeLinearLayout;
+    private TextView employeePasswordShowHide, jobseekerPasswordShowHide;
 
 
     ScrollView employeeLayout;
@@ -123,7 +129,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private FirebaseAuth.AuthStateListener authStateListener;
     private String jobseeker_username;
     private FirebaseUser firebaseUser;
-   // private String append ="";
+
    // private FirebaseFirestore firestore;
 
 
@@ -168,12 +174,21 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         jobSeekerLinearLayout = findViewById(R.id.jobseeker_LinearLayout);
         jobseekerRelativeProgressBar = findViewById(R.id.jobseeker_Progress_Circular_Layout);
 
+        //Jobseeeker TextView for hide and show password
+        jobseekerPasswordShowHide = findViewById(R.id.jobseeker_PasswordShowHide);
+        jobseekerPasswordShowHide.setOnClickListener(this);
+
 
         //Employee editText
         employeeEmail = findViewById(R.id.employee_Signup_Email);
         employeePassword = findViewById(R.id.employee_Signup_Password);
         employeeUsername = findViewById(R.id.employee_Signup_Username);
         employeeCompany = findViewById(R.id.employee_Signup_Company);
+
+        //Employee TextView show and hide password
+        employeePasswordShowHide = findViewById(R.id.employee_PasswordShowHide);
+        employeePasswordShowHide.setOnClickListener(this);
+
 
         //Employee layout and button
         employeeSignupButton = findViewById(R.id.employee_Signup_Button);
@@ -196,6 +211,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         firebaseDatabase = FirebaseDatabase.getInstance();
         jobseekerDatabaseReference = firebaseDatabase.getReference("Jobseeker");
         employeeDatabaseReference = firebaseDatabase.getReference("Employee");
+
 
 
 /*
@@ -267,7 +283,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 */
 
         //Checkbox (initiate) Show and hide password option
-        jobSeekerShowHidePassword = findViewById(R.id.jobseeker_password_ShowHide);
+        /*jobSeekerShowHidePassword = findViewById(R.id.jobseeker_password_ShowHide);
         // Dynamic string between show and hide password when user trigger checkbox
         jobSeekerShowHidePassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -285,27 +301,63 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     jobSeekerPassword.setTransformationMethod(PasswordTransformationMethod.getInstance()); //Show
                 }
             }
-        });
+        });*/
 /*
-------------------------------Show hide password for employee start here-------------------------------------
+------------------------------Text Watcher for employee password start here-------------------------------------
 */
-        //Checkbox (initiate) Show and hide password option
-        employeeShowHidePassword = findViewById(R.id.employee_password_ShowHide);
-        // Dynamic string between show and hide password when user trigger checkbox
-        employeeShowHidePassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        employeePasswordShowHide.setVisibility(View.INVISIBLE);
+
+        /*--Check text change within edit text--*/
+        employeePassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
 
             @Override
-            public void onCheckedChanged(CompoundButton button, boolean userCheck) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(employeePassword.getText().length()>0){
+                    employeePasswordShowHide.setVisibility(View.VISIBLE);//Set textView visible if exceed 0
+                }else
+                    employeePasswordShowHide.setVisibility(View.INVISIBLE);
+            }
 
-                if (userCheck) {
-                    employeeShowHidePassword.setText(R.string.signupPasswordshow); // implement string to password hide when user trigger the checkbox
-                    employeePassword.setInputType(InputType.TYPE_CLASS_TEXT);
-                    employeePassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());// Hide
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (employeePassword.length() > 10) { // if password exceed 10 clear the text
+                    employeePassword.getText().clear();
+                    onPause();//
                 }
-                else {
-                    //implement string to password show when user trigger the checkbox
-                    employeePassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    employeePassword.setTransformationMethod(PasswordTransformationMethod.getInstance()); //Show
+            }
+        });
+
+/*
+------------------------------Text Watcher for jobseeker password start here-------------------------------------
+*/
+        jobseekerPasswordShowHide.setVisibility(View.INVISIBLE);
+
+        /*--Check text change within edit text--*/
+        jobSeekerPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(jobSeekerPassword.getText().length()>0){
+                    jobseekerPasswordShowHide.setVisibility(View.VISIBLE);//Set textView visible if exceed 0
+                }else
+                    jobseekerPasswordShowHide.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (jobSeekerPassword.length() > 10) { // if password exceed 10 clear the text
+                    employeePassword.getText().clear();
+                    onPause();//
                 }
             }
         });
@@ -313,6 +365,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 /*
 ------------------------------Layout visibility start here-------------------------------------
 */
+
+
 
         // if user select the jobseeker radio button belw methods will execute
         jobseeker.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -344,6 +398,71 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
     }
+
+
+    // Code adapted from https://www.youtube.com/watch?v=md3eVaRzdIM
+    //Hide and show employee methods
+    // Code adapted from https://www.youtube.com/watch?v=md3eVaRzdIM
+    public void TextChanged(){
+        if(employeePasswordShowHide.getText() == "Show password"){
+            employeePassword.setInputType(InputType.TYPE_CLASS_TEXT);
+            // seTransformation code adapted from https://medium.com/@droidbyme/show-hide-password-in-edittext-in-android-c4c3db44f734
+            employeePassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            onPause();
+
+        }else if(employeePasswordShowHide.getText().equals("Hide password")){
+            employeePasswordShowHide.setText(R.string.signupPasswordshow);
+            employeePassword.setInputType(InputType.TYPE_CLASS_TEXT);
+            // seTransformation code adapted from https://medium.com/@droidbyme/show-hide-password-in-edittext-in-android-c4c3db44f734
+            employeePassword.setTransformationMethod(PasswordTransformationMethod.getInstance());// Hide
+            onPause();
+
+        }else{
+            employeePasswordShowHide.setText(R.string.signupPasswordhide);
+            employeePassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            // seTransformation code adapted from https://medium.com/@droidbyme/show-hide-password-in-edittext-in-android-c4c3db44f734
+            employeePassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());// Show
+            onPause();
+        }
+    }
+
+
+    public void employeePasswordTextChnaged(){
+        if(jobseekerPasswordShowHide.getText() == "Show password"){
+            jobSeekerPassword.setInputType(InputType.TYPE_CLASS_TEXT);
+            // seTransformation code adapted from https://medium.com/@droidbyme/show-hide-password-in-edittext-in-android-c4c3db44f734
+            jobSeekerPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+
+        }else if(jobseekerPasswordShowHide.getText().equals("Hide password")){
+            jobseekerPasswordShowHide.setText(R.string.signupPasswordshow);
+            jobSeekerPassword.setInputType(InputType.TYPE_CLASS_TEXT);
+            // seTransformation code adapted from https://medium.com/@droidbyme/show-hide-password-in-edittext-in-android-c4c3db44f734
+            jobSeekerPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());// Hide
+
+
+        }else{
+            jobseekerPasswordShowHide.setText(R.string.signupPasswordhide);
+            jobSeekerPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            // seTransformation code adapted from https://medium.com/@droidbyme/show-hide-password-in-edittext-in-android-c4c3db44f734
+            jobSeekerPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());// Show
+
+        }
+
+    }
+
+
+    /*---Check again code adapted from https://stackoverflow.com/questions/8122625/getextractedtext-on-inactive-inputconnection-warning-on-android (antoniom,2014)--*/
+   // To hide keyboard
+    @Override
+    public void onPause() {
+
+        // hide the keyboard in order to avoid getTextBeforeCursor on inactive InputConnection
+        InputMethodManager Hidekeyboard = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        Hidekeyboard.hideSoftInputFromWindow(employeePasswordShowHide.getWindowToken(), 0);
+        super.onPause();
+    }
+
 
 
     // Checking string validation
@@ -386,7 +505,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 */
     //Implement method for user registration which this method is called at line 314
     public void jobSeekerRegister() {
-
+         //Code adapted from
         // Email validation
         String emailRegex = "[a-zA-Z0-9\\+\\_\\%\\-\\+]{1,256}" +
 
@@ -686,6 +805,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
      */
     @Override
     public void onClick (View userTrigger) {
+
         //int selected = userTrigger.getId();
         if (userTrigger == jobSeekerSignupButton) {    // method called from line 314, public void userRegister()
             jobSeekerRegister();
@@ -693,14 +813,23 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             if (userTrigger == employeeSignupButton) {
                 employeeRegister();
             }
-                if (userTrigger == backButton) {
-                    Intent backHome = new Intent(getApplicationContext(), MainActivity.class); // getApplicationContext will live through the entire process and thus it does not matter if you store a static reference to it anywhere since it will always be there during the runtime of your app (and outlive any objects/singletons instantiated by it).
-                    // http://www.christianpeeters.com/android-tutorials/tutorial-activity-slide-animation/
-                    //Bundle anim = ActivityOptions.makeCustomAnimation(this, R.anim.anim_slideleft, R.anim.anim_slide_right).toBundle();
-                    startActivity(backHome);
-                    finish();
-                    //overridePendingTransition(R.anim.anim_slideleft,R.anim.anim_slide_right);
+               if(userTrigger == employeePasswordShowHide){
+                 TextChanged();
                 }
+                  if(userTrigger == jobseekerPasswordShowHide){
+                      employeePasswordTextChnaged();
+                  }
+                 //if(userTrigger == jobSeekerTextView){
+                    // jobSeekerOnTextChanged();
+                // }
+                   if (userTrigger == backButton) {
+                      Intent backHome = new Intent(getApplicationContext(), MainActivity.class); // getApplicationContext will live through the entire process and thus it does not matter if you store a static reference to it anywhere since it will always be there during the runtime of your app (and outlive any objects/singletons instantiated by it).
+                      // http://www.christianpeeters.com/android-tutorials/tutorial-activity-slide-animation/
+                      //Bundle anim = ActivityOptions.makeCustomAnimation(this, R.anim.anim_slideleft, R.anim.anim_slide_right).toBundle();
+                      startActivity(backHome);
+                      finish();
+                      //overridePendingTransition(R.anim.anim_slideleft,R.anim.anim_slide_right);
+                    }
        }
 }
 

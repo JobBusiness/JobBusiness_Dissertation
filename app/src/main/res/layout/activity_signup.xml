@@ -8,6 +8,14 @@
     android:background="@color/signInLogIn_color"
     tools:context=".SignupActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
      <androidx.appcompat.widget.Toolbar
         android:id="@+id/signupToolbar"
         android:layout_width="match_parent"
@@ -16,6 +24,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/app_Logo_Layout"
         app:popupTheme="@style/AppTheme.PopupOverlay"
         app:theme="@style/ThemeOverlay.AppCompat.Dark">
 
@@ -105,6 +114,7 @@
                 android:textSize="13sp" />
         </RadioGroup>
     </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- JobSeeker layout start here -->
     <ScrollView
@@ -112,12 +122,16 @@
         style="@style/scrollbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/relative_Signup_Options"
-        android:layout_marginTop="50dp"
+        android:layout_alignTop="@+id/constraintLayout"
+        android:layout_marginTop="200dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/jobseeker_Main_Laoyout"
+            android:id="@+id/jobseeker_Inner_Layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -243,9 +257,21 @@
                         android:textColorHint="#d3d3d3"
                         android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/jobseeker_PasswordShowHide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/jobseeker_password_text_input_layout"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="10dp"
+                    android:padding="8dp"
+                    android:text="@string/signupPasswordshow"
+                    android:textSize="13sp"/>
             </RelativeLayout>
 
-            <LinearLayout
+            <!--LinearLayout
                 android:id="@+id/linearLayoutCheckbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -260,7 +286,7 @@
                     android:text="@string/signupPasswordshow"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
-            </LinearLayout>
+            </LinearLayout-->
           </LinearLayout>
 
             <!--app:layout_constraintBottom_toBottomOf="parent"-->
@@ -304,11 +330,9 @@
                 android:id="@+id/jobseeker_Progress_Circular_Layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/jobseeker_LinearLayout"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/jobseeker_LinearLayout">
 
                 <ProgressBar
                     android:id="@+id/jobseeker_Indeterminate_Progress_Bar"
@@ -321,7 +345,6 @@
                     android:layout_below="@+id/jobseeker_Indeterminate_Progress_Bar"
                     android:textColor="@color/black"
                     android:textAlignment="center"
-                    android:layout_marginTop="12dp"
                     android:fontFamily="sans-serif"
                     android:textSize="17sp"
                     android:text="@string/signup_Success_Message"/>
@@ -337,8 +360,12 @@
         style="@style/scrollbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/relative_Signup_Options"
-        android:layout_marginTop="50dp"
+        android:layout_alignTop="@+id/constraintLayout"
+        android:layout_marginTop="200dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -502,9 +529,21 @@
                             android:textColorHint="#d3d3d3"
                             android:textSize="16sp" />
                     </com.google.android.material.textfield.TextInputLayout>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/employee_PasswordShowHide"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignEnd="@+id/password_text_input_layout3"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginEnd="10dp"
+                        android:padding="8dp"
+                        android:text="@string/signupPasswordshow"
+                        android:textSize="13sp"/>
                 </RelativeLayout>
 
-                <LinearLayout
+                <!--LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp">
@@ -518,7 +557,7 @@
                         android:text="@string/signupPasswordshow"
                         android:textColor="@color/black"
                         android:textSize="13sp" />
-                </LinearLayout>
+                </LinearLayout-->
             </LinearLayout>
 
             <RelativeLayout
@@ -561,11 +600,9 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/employee_LinearLayout"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/employee_LinearLayout">
 
                 <ProgressBar
                     android:id="@+id/employee_Indeterminate_Progress_Bar"

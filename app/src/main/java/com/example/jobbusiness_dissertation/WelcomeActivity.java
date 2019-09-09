@@ -15,7 +15,9 @@ public class WelcomeActivity extends AppCompatActivity {
 
     int timeout = 5000;  // Activity welcome screen set delay duration to 5 milliseconds
     private ImageView welcomeScreenLogo;
-     ProgressBar progressBar;
+    ProgressBar progressBar;
+    Animation logoZoom;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,26 +28,30 @@ public class WelcomeActivity extends AppCompatActivity {
         // Code adapted from http://www.itcuties.com/android/how-to-create-android-splash-screen/ (updated)
 
             welcomeScreenLogo= findViewById(R.id.welcomescreen_Logo);
-            progressBar= findViewById(R.id.progressbar_circular) ;
+            progressBar= findViewById(R.id.progressbar_circular);
+            logoZoom = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.anim_splashscreen);
+            logoZoom.setDuration(1500);
+            welcomeScreenLogo.startAnimation(logoZoom);
+
 
             //Load animation
-            Animation logofade_In = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.anim_welcome_activity);
+            //Animation logofade_In = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.anim_welcome_activity);
             //animation for logo fade in set delay duration to 2 milliseconds
-            logofade_In.setDuration(2000);
+            //logofade_In.setDuration(2000);
             //implement the animation for ImageView
-            welcomeScreenLogo.startAnimation(logofade_In);
+           // welcomeScreenLogo.startAnimation(logofade_In);
 
             Animation progressbar_Fadein = AnimationUtils.loadAnimation(WelcomeActivity.this,R.anim.anim_welcome_activity);
             //animation for progressbar circular fade in set delay duration to 1 milliseconds
-            progressbar_Fadein.setDuration(3000);
+            progressbar_Fadein.setDuration(9000);
             //implement the animation for ProgressBar
             progressBar.startAnimation(progressbar_Fadein);
 
-
-            //full screen without an action bar
+            //set full screen without an action bar
             this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
             mainActivityStart Activity = new mainActivityStart();
             Activity.start();
+
         }
 
         // private class for activity for implement the delay time on welcome screen activity
@@ -64,7 +70,7 @@ public class WelcomeActivity extends AppCompatActivity {
                         e.printStackTrace(); //for debugging purpose not for user display
                     }
                     finally {
-                        Intent welcomeScreen = new Intent(WelcomeActivity.this, MainActivity.class);//from currently runnin activity to MainActivity
+                        Intent welcomeScreen = new Intent(getApplicationContext(), MainActivity.class);//from currently running activity to MainActivity
                         startActivity(welcomeScreen);
 
                     }
