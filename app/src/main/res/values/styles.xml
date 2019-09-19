@@ -31,14 +31,12 @@
         <item name="android:scrollbarTrackVertical">@drawable/scroll_track</item>
     </style>
 
-
     <!--parent="android:style/Theme.Dialog"-->
-
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
 </resources>

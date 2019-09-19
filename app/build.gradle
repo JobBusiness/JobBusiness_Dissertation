@@ -40,13 +40,11 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-database:5.1.0'
 
     //dependency for image loading and caching using Picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
-    
     // Loading button circular animation
     // implementation 'br.com.simplepass:loading-button-android:2.1.5'
     implementation 'br.com.simplepass:loading-button-android:1.14.0'
-
-
 
 
     //dependency for Recycler Viewer
@@ -55,6 +53,7 @@ dependencies {
 
     //Testing implementation
     //implementation 'com.google.firebase:firebase-firestore:17.1.2'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

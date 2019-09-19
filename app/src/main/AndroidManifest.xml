@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.jobbusiness_dissertation">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,11 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PasswordReset"></activity>
-        <activity android:name=".SearchActivity" />
+        <activity android:name=".ActivityRecyclerPage"></activity>
+        <activity android:name=".PasswordReset" />
+        <activity
+            android:name=".SearchActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".Login.LoginActivity" />
-        <activity android:name=".SignupActivity" />
+        <activity android:name=".Signup.SignupActivity" />
         <activity
             android:name=".WelcomeActivity"
             android:label=""

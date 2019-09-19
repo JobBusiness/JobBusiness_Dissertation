@@ -3,18 +3,18 @@
     <string name="action_settings">Settings</string>
 
 
-<!--String include within menu_main.xml layout start here-->
+    <!--String include within menu_main.xml layout start here-->
     <string name="refresh">Refresh</string>
     <string name="exit">Exit</string>
     <string name="logout">Logout</string>
-<!--String include within menu_main.xml layout end here-->
+    <!--String include within menu_main.xml layout end here-->
 
 
-<!--String implement to Content description of image mobile application logo (all page)-->
+    <!--String implement to Content description of image mobile application logo (all page)-->
     <string name="contentDescription">JobBussiness Brunei</string>
 
 
-<!--String included within activity_main.xml layout start here-->
+    <!--String included within activity_main.xml layout start here-->
     <!--activity_main.xml-->
     <string name="menu_text">Menu</string>
     <string name="welcomeScreenLogo">Application Logo</string>
@@ -30,13 +30,15 @@
     <!--String implement to activity_main.xml-->
     <string name="About">About</string>
     <string name="Jobhelp">Job Help</string>
-    <string name="FindJob">Find Job</string>
+    <string name="FindJob">Search Job</string>
     <string name="Curiculumvitue">Curiculum Vitue</string>
     <string name="title">Navigation Menu</string>
-<!--String included within activity_main.xml layout end here-->
+    <string name="searchShop">Search Shop</string>
+
+    <!--String included within activity_main.xml layout end here-->
 
 
-<!--String included within activity_login.xml layout start here (Both landscape and layout)-->
+    <!--String included within activity_login.xml layout start here (Both landscape and layout)-->
     <!--Button string-->
     <string name="loginButton">Log in</string>
     <!--Edit text hint string-->
@@ -54,18 +56,18 @@
     <string name="login_signupOption">Don\'t have account | Sign up</string>
     <!--String for textView with login circular progress bar-->
     <string name="login_Success_Message">Please wait, your account is now log in.</string>
-<!--String included within activity_login.xml end here-->
+    <!--String included within activity_login.xml end here-->
 
-<!--String included within activity_password_reset.xml layout start here-->
+    <!--String included within activity_password_reset.xml layout start here-->
     <string name="resetPassword">Reset Password</string>
     <string name="resetHint_Email">Enter your email</string>
     <string name="message">Enter your email address. Clikc on the link to reset your assword</string>
     <!--String for button-->
     <string name="resetButton">Send Email</string>
-<!--String included within activity_password_reset.xml layout end here-->
+    <!--String included within activity_password_reset.xml layout end here-->
 
 
-<!--String included within activity_signup.xml layout start here-->
+    <!--String included within activity_signup.xml layout start here-->
     <!--String for button-->
     <string name="signupButton">Sign up</string>
     <!--String for Edit text hint-->
@@ -95,6 +97,16 @@
     <string name="searchHint">Search for Job</string>
     <string name="textCardView">Text View</string>
     <string name="filterBy">Filter</string>
+
+    <!--code adapted from https://developer.android.com/guide/topics/resources/string-resource.html#Plurals-->
+    <string name="allJob">%1$s jobs available</string>
+    <string name="jobLocation">%1$s jobs available in %2$s district</string>
+    <string name="Profile">Profile</string>
+    <string name="profilePage">Profile</string>
+    <string name="location">Search by location</string>
+    <string name="sortBy">Sort by</string>
+
+
     <!--String included within activity_signup.xml layout end here-->
 
 </resources>

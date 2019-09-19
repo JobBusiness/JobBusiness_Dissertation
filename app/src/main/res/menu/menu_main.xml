@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.jobbusiness_dissertation.MainActivity">
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+tools:context="com.example.jobbusiness_dissertation.MainActivity">
 
-    <item
-        android:id="@+id/action_more"
-        android:title=""
-        android:icon="@drawable/ic_overflowmenu"
-        app:showAsAction="ifRoom">
-        <menu>
-            <item
-                android:id="@+id/action_settings_refresh"
-                android:icon="@drawable/ic_refresh"
-                android:title="@string/refresh" />
+<item
+    android:id="@+id/action_more"
+    android:title=""
+    android:icon="@drawable/ic_overflowmenu"
+    app:showAsAction="ifRoom">
+    <menu>
+        <item
+            android:id="@+id/action_settings_refresh"
+            android:icon="@drawable/ic_refresh"
+            android:title="@string/refresh" />
 
-            <item
-                android:id="@+id/action_settings_exit"
-                android:icon="@drawable/ic_close"
-                android:title="@string/exit" />
-            <item
-                android:id="@+id/action_settings_logout"
-                android:icon="@drawable/ic_exit"
-                android:title="@string/logout" />
+        <item
+            android:id="@+id/action_settings_exit"
+            android:icon="@drawable/ic_close"
+            android:title="@string/exit" />
+        <item
+            android:id="@+id/action_settings_logout"
+            android:icon="@drawable/ic_exit"
+            android:title="@string/logout" />
 
-        </menu>
-    </item>
+    </menu>
+</item>
 </menu>
 

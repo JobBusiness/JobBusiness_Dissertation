@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/mainColor"
     tools:context=".SearchActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -16,18 +16,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar_Layout"
+        app:layout_constraintBottom_toTopOf="@+id/indeterminate_ProgressBar"
         app:popupTheme="@style/AppTheme.PopupOverlay"
         app:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-        <Button
+        <ImageButton
             android:id="@+id/searchjob_Backbutton"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="45dp"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            android:drawableStart="@drawable/ic_back"
-            android:gravity="center"
+            android:src="@drawable/ic_back"
             android:paddingTop="4dp" />
 
         <TextView
@@ -39,22 +38,17 @@
             android:textColor="#000000"
             android:textSize="20sp" />
     </androidx.appcompat.widget.Toolbar>
-    <LinearLayout
-        android:id="@+id/progressBar_Layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/searchView_RelativeLayout"
-        app:layout_constraintTop_toBottomOf="@+id/searchjobToolbar">
 
         <ProgressBar
             android:id="@+id/indeterminate_ProgressBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:indeterminateOnly="true" />
-    </LinearLayout>
+            android:indeterminateOnly="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/searchView_RelativeLayout"
+            app:layout_constraintTop_toBottomOf="@+id/searchjobToolbar"/>
 
         <RelativeLayout
             android:id="@+id/searchView_RelativeLayout"
@@ -62,10 +56,10 @@
             android:layout_height="wrap_content"
             android:padding="6dp"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintTop_toBottomOf="@+id/searchjobToolbar"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/recyclerViewer">
+            app:layout_constraintEnd_toEndOf="parent">
 
             <EditText
                 android:id="@+id/edittext_SearchView"
@@ -73,8 +67,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="55dp"
-                android:background="@drawable/edittext_radius"
+                android:layout_marginEnd="57dp"
+                android:background="@drawable/edittext_searchbar_radius"
                 android:ems="20"
                 android:fontFamily="sans-serif"
                 android:hint="@string/searchHint"
@@ -85,43 +79,83 @@
                 android:paddingBottom="15dp"
                 android:textColor="@color/black" />
 
-            <Button
+            <ImageButton
+                android:id="@+id/search_Filter"
                 style="?android:attr/borderlessButtonStyle"
-                android:layout_width="44dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignEnd="@+id/edittext_SearchView"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="1dp"
                 android:layout_marginEnd="15dp"
                 android:background="@color/colorPrimary"
-                android:drawableEnd="@drawable/ic_filter"
+                android:src="@drawable/ic_filter"
                 android:textColor="@color/black" />
 
             <ImageButton
-                android:id="@+id/searching_Button"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="@drawable/edittext_radius"
-                android:drawablePadding="@android:dimen/app_icon_size"
-                android:src="@drawable/ic_search"/>
+               android:id="@+id/searching_Button"
+               android:layout_width="45dp"
+               android:layout_height="45dp"
+               android:layout_alignParentEnd="true"
+               android:layout_centerVertical="true"
+               android:layout_marginEnd="9dp"
+               android:background="@drawable/edittext_searchbar_radius"
+               android:src="@drawable/ic_search" />
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/available_Job"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/allJob"
+            android:fontFamily="sans-serif"
+            android:textSize="15sp"
+            android:layout_marginTop="5dp"
+            android:textAlignment="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchView_RelativeLayout"
+            app:layout_constraintBottom_toTopOf="@+id/recyclerViewer"/>
+
+         <TextView
+            android:id="@+id/location_Job"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/jobLocation"
+            android:fontFamily="sans-serif"
+            android:textSize="15sp"
+            android:layout_marginBottom="5dp"
+            android:textAlignment="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchView_RelativeLayout"
+            app:layout_constraintBottom_toTopOf="@+id/recyclerViewer"/>
 
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewer"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            android:padding="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/searchView_RelativeLayout"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+           android:id="@+id/recyclerViewer"
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+           android:orientation="vertical"
+           android:padding="7dp"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toBottomOf="@+id/available_Job">
         </androidx.recyclerview.widget.RecyclerView>
 
+
+    <ImageButton
+        android:id="@+id/reload_Button"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignParentEnd="true"
+        android:background="@color/colorPrimary"
+        android:src="@drawable/ic_refresh"
+        android:layout_marginStart="300dp"
+        android:layout_marginTop="3dp"
+        app:layout_constraintBottom_toBottomOf="@+id/searchjobToolbar"
+        app:layout_constraintEnd_toEndOf="@+id/searchjobToolbar"
+        app:layout_constraintStart_toStartOf="@+id/searchjobToolbar"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

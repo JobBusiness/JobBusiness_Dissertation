@@ -44,8 +44,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
-        style="@style/scrollbar"
-        android:layout_below="@+id/appBarLayout">
+        android:layout_below="@+id/appBarLayout"
+        style="@style/scrollbar">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -59,9 +59,7 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <include layout="@layout/activity_header"/>
-
             </LinearLayout>
 
             <!--Gridlayout of the mainmenu page-->
@@ -141,7 +139,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-smallcaps"
-                            android:text="@string/FindJob"
+                            android:text="@string/Profile"
                             android:textAlignment="center"
                             android:textColor="#000000"
                             android:textSize="30sp"
@@ -178,7 +176,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-smallcaps"
-                            android:text="@string/FindJob"
+                            android:text="@string/searchShop"
                             android:textAlignment="center"
                             android:textColor="#000000"
                             android:textSize="30sp"
