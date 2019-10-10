@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.jobbusiness_dissertation">
-
+    <!-- Permission requirements start here -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -10,15 +11,23 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".ActivityRecyclerPage"></activity>
-        <activity android:name=".PasswordReset" />
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".AdvertiseProductActivity"></activity>
+        <!-- Company activity (For employee as the admin) start here -->
+        <activity android:name=".Company.MainCompanyActivity" /> <!-- Company activity (For employee as the admin) end here -->
+        <!-- Profile activity start here -->
+        <activity android:name=".ProfileActivity" /> <!-- Profile activity end here -->
+        <!-- Recycler Viewer activity start here -->
+        <activity android:name=".ActivityRecyclerPage" /> <!-- Recycler Viewer activity end here -->
+        <!-- Job search activity start here -->
         <activity
-            android:name=".SearchActivity"
+            android:name=".JobSearchActivity"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".Login.LoginActivity" />
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Job search activity end here -->
+        <!-- Login activity start here -->
+        <activity android:name=".Login.LoginActivity" /> <!-- Login activity end here -->
+        <!-- Signup activity start here -->
         <activity android:name=".Signup.SignupActivity" />
         <activity
             android:name=".WelcomeActivity"
@@ -29,8 +38,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".HeaderActivity" />
+        </activity> <!-- Signup activity end here -->
+        <!-- Main activity start here -->
         <activity
             android:name=".MainActivity"
             android:label=""

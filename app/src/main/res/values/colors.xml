@@ -9,12 +9,10 @@
     <!-- Color applied to mobile status bar colour-->
     <color name="statusBar">#4f96d8</color>
 
-
     <!--Color applied to toolbar background colour -->
     <color name="backgroundToolbar">#51A0D5</color>
     <color name="header">#44D1D1D1</color>
     <color name="colorMenuButton">#ffffff</color>
-
 
     <!--Color applied to Welcome screen.xml and activity_main.xml color-->
     <color name="mainColor">#FFFAFA</color>
@@ -34,4 +32,11 @@
 
 
     <color name="black">#000000</color>
+
+
+    <!--Tab layout for Admin-->
+    <color name="tabtextblack">#000000</color>
+    <color name="tabindicatorwhite">#000000</color>
+    <color name="tabbackgroundgrey">#d3d3d3</color>
+
 </resources>

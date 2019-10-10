@@ -48,6 +48,7 @@
             android:textSize="20sp" />
     </androidx.appcompat.widget.Toolbar>
 
+    <!--Linear layout for application logo start here-->
     <LinearLayout
         android:id="@+id/app_Logo_Layout"
         android:layout_width="match_parent"
@@ -66,7 +67,9 @@
             android:contentDescription="@string/contentDescription"
             android:src="@drawable/applogo" />
     </LinearLayout>
+    <!--Linear layout for application logo end here-->
 
+    <!--Relative layout for radion button (include sign up as employee or job seeker start here-->
     <RelativeLayout
         android:id="@+id/relative_Signup_Options"
         android:layout_width="match_parent"
@@ -114,9 +117,10 @@
                 android:textSize="13sp" />
         </RadioGroup>
     </RelativeLayout>
+    <!--Relative layout for radion button (include sign up as employee or job seeker end here-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- JobSeeker layout start here -->
+    <!-- Scroll view layout for job seeker sign up layout start here-->
     <ScrollView
         android:id="@+id/jobseeker_Layout"
         style="@style/scrollbar"
@@ -130,11 +134,13 @@
         android:layout_alignParentTop="true"
         android:fillViewport="true">
 
+        <!--Constraint layout for job seeker sign up layout start here-->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/jobseeker_Inner_Layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+          <!--Linear layout for job seeker sign up main body start here-->
           <LinearLayout
               android:id="@+id/jobseeker_LinearLayout"
               android:layout_width="match_parent"
@@ -270,26 +276,10 @@
                     android:text="@string/signupPasswordshow"
                     android:textSize="13sp"/>
             </RelativeLayout>
-
-            <!--LinearLayout
-                android:id="@+id/linearLayoutCheckbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp">
-
-                  <CheckBox
-                    android:id="@+id/jobseeker_password_ShowHide"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="35dp"
-                    android:fontFamily="sans-serif"
-                    android:text="@string/signupPasswordshow"
-                    android:textColor="@color/black"
-                    android:textSize="13sp" />
-            </LinearLayout-->
           </LinearLayout>
+          <!--Linear layout for job seeker sign up main body end here-->
 
-            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+           <!--Relative layout for job seeker sign up button start here-->
            <RelativeLayout
                android:id="@+id/jobseeker_Relative_Button"
                android:layout_width="match_parent"
@@ -325,7 +315,9 @@
                  android:textColorLink="@color/link_Blue"
                  android:textSize="14sp" />
            </RelativeLayout>
+            <!--Relative layout for job seeker sign up button layout end here-->
 
+            <!--Relative layout for job seeker sign up circular progress layout start here-->
             <RelativeLayout
                 android:id="@+id/jobseeker_Progress_Circular_Layout"
                 android:layout_width="match_parent"
@@ -349,12 +341,14 @@
                     android:textSize="17sp"
                     android:text="@string/signup_Success_Message"/>
             </RelativeLayout>
+            <!--Relative layout for job seeker sign up circular progress layout end here-->
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <!--Constraint layout for job seeker sign up layout end here-->
     </ScrollView>
-<!-- JobSeeker layout end here -->
+    <!-- Scroll view layout for job seeker sign up layout end here-->
 
 
-<!-- Employee layout start here -->
+    <!--Scroll view layout for employee sign up layout start here-->
     <ScrollView
         android:id="@+id/employee_Layout"
         style="@style/scrollbar"
@@ -368,11 +362,13 @@
         android:layout_alignParentTop="true"
         android:fillViewport="true">
 
+        <!--Constraint layout for employee sign up layout start here-->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/employee_Main_Layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <!--Linear layout for employee sign up main body start here-->
             <LinearLayout
                 android:id="@+id/employee_LinearLayout"
                 android:layout_width="match_parent"
@@ -542,24 +538,10 @@
                         android:text="@string/signupPasswordshow"
                         android:textSize="13sp"/>
                 </RelativeLayout>
-
-                <!--LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
-
-                    <CheckBox
-                        android:id="@+id/employee_password_ShowHide"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="35dp"
-                        android:fontFamily="sans-serif"
-                        android:text="@string/signupPasswordshow"
-                        android:textColor="@color/black"
-                        android:textSize="13sp" />
-                </LinearLayout-->
             </LinearLayout>
+            <!--Linear layout for employee sign up main body end here-->
 
+            <!--Relative layout for employee sign up button layout start here-->
             <RelativeLayout
                 android:id="@+id/employee_Relative_Button"
                 android:layout_width="match_parent"
@@ -595,6 +577,9 @@
                     android:textColorLink="@color/link_Blue"
                     android:textSize="14sp" />
             </RelativeLayout>
+            <!--Relative layout for employee sign up button layout end here-->
+
+            <!--Relative layout for employee sign up circular progress layout start here-->
             <RelativeLayout
                 android:id="@+id/employee_Progress_Circular_Layout"
                 android:orientation="vertical"
@@ -620,7 +605,9 @@
                     android:textSize="17sp"
                     android:text="@string/signup_Success_Message"/>
             </RelativeLayout>
+            <!--Relative layout for employee sign up circular progress layout start here-->
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <!--Constraint layout for employee sign up layout end here-->
     </ScrollView>
     <!-- Employee layout end here after ScrollView -->
 </RelativeLayout>

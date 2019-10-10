@@ -6,8 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputType;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.LinkMovementMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -43,21 +46,27 @@ import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    // Enable logcat message of the application during runtime
+    // logcat message of the application during runtime
     private static final String tag = "LoginActivity";
-    private EditText loginPassword, loginEmail;
+
+    private EditText loginPassword, loginEmail, currentEmail;
     private ProgressBar progressBar;
     private CheckBox showhidepassword;
     private LinearLayout login_linearLayout;
-    TextView passwordforget;
+    private TextView passwordforget;
+
     //widgets
-    Button loginButton, backButton,loginAuthentication, closeButton, resetButton ;
+    Button loginButton,loginAuthentication, closeButton, resetButtonSendLink,loginBackButton ;
+
     //pop up window
     private LinearLayout linearPopUp,linearBackgroundPopUp;
     private RelativeLayout loginRelativeButton, loginRelativeProgressbar;
 
+    //Show hide password textView
+    private TextView loginPasswordShowHide;
+
  /*
-----------------------Firebase------------------------
+---------------Firebase----------------
 */
     private FirebaseAuth firebaseAuthentication;
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -66,7 +75,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
 /*
- ----------------------Animation------------------------
+ -------------Animation---------------
 */
     private Animation setErrorAnim_LogIn;
 
@@ -81,31 +90,34 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //Initialize animation
         setErrorAnim_LogIn = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.anim_error);
 
-        //set the respective id within login.xml, for button and edittext
-        backButton = findViewById(R.id.login_Backbutton); //Implement for homce icon button in toolbar
-        backButton.setOnClickListener(this );
+        //Toolbar
+        loginBackButton = findViewById(R.id.login_Backbutton);
+        loginBackButton.setOnClickListener(this);
 
+        //Login main body
         login_linearLayout = findViewById(R.id.login_LinearLayout);
         loginPassword = findViewById(R.id.login_Password);
         loginEmail = findViewById(R.id.login_Email);
         loginButton = findViewById(R.id.login_Button);
         loginButton.setOnClickListener(this);
 
-        //Pop up window set layout visibility
+        //Pop up window for forget password set the layout visibility
         linearBackgroundPopUp = findViewById(R.id.linear_background_popup);
         linearPopUp = findViewById(R.id.linear_window_popup);
         linearPopUp.setVisibility(View.INVISIBLE);
         linearBackgroundPopUp.setVisibility(View.INVISIBLE);
-
         passwordforget = findViewById(R.id.login_passwordForget);
-        resetButton = findViewById(R.id.reset_Button);
-        closeButton = findViewById(R.id.window_Close_Button);
 
-        //set the respective id within login.xml, for layout visibility
+        //Reset password page
+        resetButtonSendLink = findViewById(R.id.reset_Button);
+        closeButton = findViewById(R.id.window_Close_Button);
+        currentEmail = findViewById(R.id.currentlogin_Email);
+
+        //Login button layout visibility
         loginRelativeButton = findViewById(R.id.login_Button_Layout);
         loginRelativeProgressbar = findViewById(R.id.login_Progress_Circular_Layout);
 
-        //Initially hide the progressbar layout before signup
+        //Initially hide the progressbar layout before login
         loginRelativeProgressbar.setVisibility(View.INVISIBLE);
 
         //Firebase
@@ -114,11 +126,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Jobseeker");//maybe login the job seeker
 
-        //Checkbox (initiate)
-        showhidepassword = findViewById(R.id.login_passwordShowHide);
+        //Text view password show hide
+        loginPasswordShowHide = findViewById(R.id.login_PasswordShowHide);
+        loginPasswordShowHide.setOnClickListener(this);
+
+
 
 /*
-------------------------------Clickable Span textView methods Start here-------------------------------------
+--------Clickable Spannable text view start here------------
 */
 
         ClickableSpan setClickable;
@@ -126,14 +141,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Identify textView id for implement the method
         TextView loginTextView = findViewById(R.id.login_Signup);
 
-        // Implement (getString ) from string.xml (signup_loginOption)
+        // get string from string.xml (signup_loginOption)
         final String text = getString(R.string.login_signupOption);
         SpannableString textViewStringSelect = new SpannableString(text);
         setClickable = new ClickableSpan() {
 
-            // link to SignupActivty
+
             @Override
-            public void onClick(View jd) {
+            public void onClick(View view) {
                 Intent jump = new Intent(getApplicationContext(), SignupActivity.class);
                 startActivity(jump);
             }
@@ -144,6 +159,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             //apply.setUnderlineText(true);
             //}
         };
+
         // span for textview is maximum to 28
         textViewStringSelect.setSpan(setClickable, 21, 28, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
@@ -158,13 +174,55 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginTextView.setText(textViewStringSelect);
         loginTextView.setHighlightColor(Color.TRANSPARENT);
         loginTextView.setPaintFlags(loginTextView.getPaintFlags());
+/*
+-----------Clickable spannable textView methods end here---------------
+*/
+
 
 /*
-------------------------------Clickable Span textView methods end here-------------------------------------
+-----------TextWatcher password for edittext start here (text clear if password greater than 10)-----------
+*/
+
+        loginPasswordShowHide.setVisibility(View.INVISIBLE);
+
+        /*--Check text change within edit text--*/
+        loginPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(loginPassword.getText().length()>0){
+                    loginPasswordShowHide.setVisibility(View.VISIBLE);//Set textView visible if exceed 0
+                }else
+                    loginPasswordShowHide.setVisibility(View.INVISIBLE);
+            }
+
+            // if password exceed 10 clear the text
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (loginPassword.length() > 10) {
+                    loginPassword.getText().clear();
+                    onPause();
+                }
+            }
+        });
+
+/*
+-----------TextWatcher password for edittext end here------------------
+*/
+
+
+
+/*
+----------Password check box start here------------------
 */
 
         // show and hide password(user trigger checkbox)
-        showhidepassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+       /* showhidepassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton button, boolean userCheck) {
@@ -173,17 +231,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     // implement string to password hide when user trigger the checkbox
                     showhidepassword.setText(R.string.loginPasswordhide);
                     //initially set password field value visible to user
-                    loginPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());//Show the string within the password field
+                    editTextLoginPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());//Show the string within the password field
 
                 } else {
                     showhidepassword.setText(R.string.loginPasswordshow);
-                    loginPassword.setTransformationMethod(PasswordTransformationMethod.getInstance()); //Hide the string within the password field
+                    editTextLoginPassword.setTransformationMethod(PasswordTransformationMethod.getInstance()); //Hide the string within the password field
 
                 }
 
             }
-        });
+        });*/
 
+
+ /*
+-----------Username validation start here------------------
+*/
                 //Edit text Username validation
                /* if (loginUsername.length() == 0)    //Validation if the edittext box is empty
                 // code adapted from https://www.youtube.com/watch?v=QLPasDQc7qc
@@ -198,11 +260,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }*/
             //}
        // });
+/*
+-----------Username validation end here------------------
+*/
+
+
+/*
+---------Password forget anchor start here (Reset password by user email)-----------
+*/
 
         //Implement set on click listener to textview
         passwordforget.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View passwordOnClick) {
                 linearBackgroundPopUp.setVisibility(View.VISIBLE);
                 linearPopUp.setVisibility(View.VISIBLE);
                 login_linearLayout.setVisibility(View.INVISIBLE);
@@ -213,10 +283,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        //Passoword forget window
+        //Password close button
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View closeOnClick) {
                 linearBackgroundPopUp.setVisibility(View.INVISIBLE);
                 linearPopUp.setVisibility(View.INVISIBLE);
                 login_linearLayout.setVisibility(View.VISIBLE);
@@ -224,22 +294,91 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
+        resetButtonSendLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //String validation
+                final String currentLoginEmail = currentEmail.getText().toString();
+                if(currentLoginEmail.isEmpty()){
+                    Toast.makeText(getApplicationContext(),"Enter your current login email",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    firebaseAuthentication.sendPasswordResetEmail(currentLoginEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> currentEmailSend) {
+
+                            if (currentEmailSend.isSuccessful()){
+
+                                Toast.makeText(getApplicationContext(),"We have send a link for you to reset at your email address " + currentLoginEmail,Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                String errorMessage = currentEmailSend.getException().getMessage();
+                                Toast.makeText(getApplicationContext(),"Reset link is not successful send to your email. Error found: " + errorMessage, Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+/*
+---------Password forget anchor text end here-----------
+*/
     }
 
-   //Validation
-    private boolean String (String string) {
-        Log.d(tag, " Login Validation: Check if string email and password is null");
-        if (string.isEmpty()) {
-            return true;//if null set error message
-        } else {
-            return false;// if not null no error message
+
+/*
+ ---------Password editext text watcher start here-----------
+*/
+    public void loginPasswordTextChanged(){
+        if(loginPasswordShowHide.getText() == "Show password"){
+            loginPassword.setInputType(InputType.TYPE_CLASS_TEXT);
+            // seTransformation code adapted from https://medium.com/@droidbyme/show-hide-password-in-edittext-in-android-c4c3db44f734
+            loginPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+
+        }else if(loginPasswordShowHide.getText().equals("Hide password")){
+            loginPasswordShowHide.setText(R.string.signupPasswordshow);
+            loginPassword.setInputType(InputType.TYPE_CLASS_TEXT);
+            // seTransformation code adapted from https://medium.com/@droidbyme/show-hide-password-in-edittext-in-android-c4c3db44f734
+            loginPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());// Hide
+
+
+        }else{
+            loginPasswordShowHide.setText(R.string.signupPasswordhide);
+            loginPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            // seTransformation code adapted from https://medium.com/@droidbyme/show-hide-password-in-edittext-in-android-c4c3db44f734
+            loginPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());// Show
+
         }
+
     }
+/*
+---------Password editext text watcher start here-----------
+*/
+
+
+/*
+----------private string empty validation start here----------
+*/
+         private boolean String (String string) {
+           Log.d(tag, " Login Validation: Check if string email and password is null");
+            if (string.isEmpty()) {
+              return true;//if null set error message
+            } else {
+              return false;// if not null no error message
+         }
+    }
+
+/*
+----------private string empty validation start here----------
+*/
+
 
  /*
-----------------------------------------------Firebase methods-------------------------------------------------
+--------Firebase methods---------
 */
-        public void button() {
+        public void loginButton() {
 
 
             // Email validation parameter
@@ -295,7 +434,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             loginRelativeProgressbar.setVisibility(View.VISIBLE);
             loginRelativeButton.setVisibility(View.INVISIBLE);
 
-            /*-------------------------Firebase authentication-------------------------*/
+   /*
+   -------------------------Firebase authentication start here-------------------------
+   */
             firebaseAuthentication.signInWithEmailAndPassword(login_email, login_password)
                     .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -323,6 +464,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             }
                         }
                     });
+
             // if user login not null, navigate to mainActivity
             if(firebaseAuthentication.getCurrentUser()!= null){
                 Intent intent =new Intent(LoginActivity.this,MainActivity.class);
@@ -367,7 +509,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         }
 
-
     //@Override
         //protected void onStop () {
            // super.onStop();
@@ -377,24 +518,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
        // }
 
 
-
-
     /**
      *
-     * @param userTrigger //Implement method for each button when user select
+     * @param button
      */
         @Override
-        public void onClick (View userTrigger){
-            if (userTrigger == backButton) {
-                Intent Home = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(Home);
-                finish();
+        public void onClick (View button){
+            switch(button.getId() ){
+
+                case R.id.login_Backbutton:
+                    Intent Home = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(Home);
+                    finish();
+                    break;
+
+                case R.id.login_Button:
+                    loginButton();
+                    break;
+
+                case R.id.login_PasswordShowHide:
+                    loginPasswordTextChanged();
+                    break;
             }
-                if (userTrigger == loginButton){
-                  button();
-
-                }
-
+            
         }
 }
 

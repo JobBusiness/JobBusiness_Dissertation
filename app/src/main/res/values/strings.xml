@@ -45,7 +45,7 @@
     <string name="loginHint_Password">password</string>
     <string name="loginHint_Username">username</string>
     <string name="loginHint_Email">email</string>
-    <!--passowrd hide and show string-->
+    <!--passoword hide and show string-->
     <string name="loginPasswordshow">Show password</string>
     <string name="loginPasswordhide">Hide password</string>
     <!--password forget string-->
@@ -61,7 +61,9 @@
     <!--String included within activity_password_reset.xml layout start here-->
     <string name="resetPassword">Reset Password</string>
     <string name="resetHint_Email">Enter your email</string>
-    <string name="message">Enter your email address. Clikc on the link to reset your assword</string>
+    <string name="resetPasswordInformation">Enter your email to rest your existing password. Make sure your email is valid</string>
+
+
     <!--String for button-->
     <string name="resetButton">Send Email</string>
     <!--String included within activity_password_reset.xml layout end here-->
@@ -99,13 +101,27 @@
     <string name="filterBy">Filter</string>
 
     <!--code adapted from https://developer.android.com/guide/topics/resources/string-resource.html#Plurals-->
+    <!--Text message on search job page-->
     <string name="allJob">%1$s jobs available</string>
     <string name="jobLocation">%1$s jobs available in %2$s district</string>
+    <string name="jobType">%1$s jobs available for %2$s </string>
+
     <string name="Profile">Profile</string>
     <string name="profilePage">Profile</string>
     <string name="location">Search by location</string>
     <string name="sortBy">Sort by</string>
+    <string name="editProfile">Edit Profile</string>
+    <string name="showProfile">Show Profile</string>
 
+    <!--String for company main page-->
+    <string name="headingTitle">Company Main Page</string>
+    <string name="adminMessage">Welcome to admin page</string>
+    <string name="pageInformation">This allow you to use ....</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="admin">Hello blank fragment</string>
+    <string name="businessName">Business name</string>
 
     <!--String included within activity_signup.xml layout end here-->
 

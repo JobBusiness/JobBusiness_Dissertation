@@ -7,6 +7,9 @@ import android.os.Bundle;
 import com.example.jobbusiness_dissertation.Login.LoginActivity;
 import com.example.jobbusiness_dissertation.Signup.SignupActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +30,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public LinearLayout buttonSignup, buttonLogin;
     public  CardView buttonOne, buttonTwo, buttonThree, buttonFour;
     public  MenuInflater menuInflater;
+
+    private FirebaseAuth databaseAuthentication;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +66,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+      //  FirebaseUser user = databaseAuthentication.getCurrentUser();
+        //String userUID = user.getUid();
+       // String userID = user.getDisplayName();
+       // databaseReference = FirebaseDatabase.getInstance().getReference("Jobseeker").child().
+
+
+
+
+
+
+
+
+
+
 
     }
 
+    /*--Floating action button (maybe can used for future improvement--*/
     //Toolbar toolbar = findViewById(R.id.toolbar);
     //setSupportActionBar(toolbar);
         /*FloatingActionButton fab = findViewById(R.id.fab);
@@ -82,6 +103,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .setAction("Action", null).show();
             }
         });*/
+
+
+
+
 
 
 
@@ -174,12 +199,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         switch (button.getId()){
             case R.id.cardViewOne:
-                Intent navigationOne = new Intent(MainActivity.this, SearchActivity.class);
+                Intent navigationOne = new Intent(MainActivity.this, JobSearchActivity.class);
                 startActivity(navigationOne);
                 break;
 
             case R.id.cardViewTwo:
-                Intent navigationTwo = new Intent(this, ProfileActivity.class);
+                Intent navigationTwo = new Intent(this, JobSearchActivity.class);
                 startActivity(navigationTwo);
                 break;
 

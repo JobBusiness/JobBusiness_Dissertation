@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:background="@color/backgroundToolbar"
             app:layout_scrollFlags="scroll">
+
             <!--Code adapted from https://www.viralandroid.com/2016/01/android-button-with-icon-and-text.html-->
             <!--Borderless button code adapted from https://developer.android.com/guide/topics/ui/controls/button-->
             <!--code adapted from https://www.youtube.com/watch?v=LOcD1evBcSA-->

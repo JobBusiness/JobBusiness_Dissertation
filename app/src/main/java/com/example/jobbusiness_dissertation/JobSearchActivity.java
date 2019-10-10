@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -18,9 +19,11 @@ import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -34,18 +37,18 @@ import com.example.jobbusiness_dissertation.RecyclerViewHolderAdapter.ViewHolder
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 //import com.google.android.material.chip.Chip;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 
 //import static com.example.jobbusiness_dissertation.ArrayListAdapter.ArrayListAdapter.jobLocation;
-public class SearchActivity extends AppCompatActivity implements View.OnClickListener,Recycler_Viewer_Adapter.OnViewHolderOnClick {
+public class JobSearchActivity extends AppCompatActivity implements View.OnClickListener,Recycler_Viewer_Adapter.OnViewHolderOnClick {
 
     //Arrays
     private ArrayList<SearchCompanyDetails> dataList = new ArrayList<SearchCompanyDetails>();
@@ -63,31 +66,33 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private int countJob = 0;
 
     //For debugging
-    private static final String tag = "SearchActivity";
+    private static final String tag = "JobSearchActivity";
 
     //Others
     private ImageButton backButton, reloadButton;
     private EditText searchBar;
     private ImageButton imageButton, searchFilter;
     public ProgressBar progressBarLayout;
-    private TextView textViewMessageOne, textViewMessageTwo;
+    private TextView textViewMessageOne, textViewMessageTwo, textViewMessageThree;
     //private AutoCompleteTextView searchFilterTextView;
     private AlertDialog.Builder builder;
     private Spinner spinnerJobDistrict, spinnerJobTypes;
     // public Chip tags;
-    private String textViewOne, textViewTwo;
+    private String textViewOne, textViewTwo, textViewThree;
+
 
     //Firebase
     FirebaseRecyclerOptions<SearchCompanyDetails> RecyclerOptions;
     FirebaseRecyclerAdapter<SearchCompanyDetails, ViewHolderAdapter> RecyclerAdapter;
     private Recycler_Viewer_Adapter recycler_viewer_adapter;
     private DatabaseReference databaseReference;
+    private FirebaseStorage databaseStorage;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_searchbar);
+        setContentView(R.layout.activity_jobsearch);
 
         // selectItem();
         /*
@@ -112,8 +117,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         //tags = findViewById(R.id.tags);
 
         //TextView
-        textViewMessageOne = findViewById(R.id.available_Job);
-        textViewMessageTwo = findViewById(R.id.location_Job);
+        textViewMessageOne = findViewById(R.id.textView_Available_Job);
+        textViewMessageTwo = findViewById(R.id.textView_JobDistrict);
+        textViewMessageThree = findViewById(R.id.textView_JobType);
         //progressBar
         progressBarLayout = findViewById(R.id.indeterminate_ProgressBar);
         /*--Recycler Viewer initialisation--*/
@@ -124,17 +130,25 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         //Edit text (Search bar)
         searchBar = findViewById(R.id.edittext_SearchView);
 
-
         //Toolbar show up overflow menu
         Toolbar toolbar = findViewById(R.id.searchjobToolbar);
         setSupportActionBar(toolbar);
 
+        //Firebase
+
+
 
         /*
-        --------------- RecyclerViewer (All jobs)-------------------
+        --------------- RecyclerViewer (Show all available jobs in database) start here-------------------
         */
-        //Firebase, initialize the database Reference for getting the data
-        databaseReference = FirebaseDatabase.getInstance().getReference("Company");//get reference of the recycle view .getReference.getChild()
+        //initialize the database reference for getting the data
+         databaseReference = FirebaseDatabase.getInstance().getReference("Company");//get reference of the recycle view .getReference.getChild()
+
+        //Initialize random child key to (get key)
+        //FirebaseDatabase database = FirebaseDatabase.getInstance();
+        //String key = database.getReference("Company").push().getKey();
+
+
 
         //Initialise recyclerViewer
         RecyclerOptions = new FirebaseRecyclerOptions.Builder<SearchCompanyDetails>().setQuery
@@ -149,32 +163,29 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 //Get the position of item when user cliked
                 // String userGetId = getRef(itemPosition).getKey();
 
-                Log.d(tag, "SearchActivity retrieve data: Get data");
+                Log.d(tag, "JobSearchActivity retrieve data: Get data");
                 //Set the data to display on view holder
                 viewHolderAdapter.datatitle.setText(modelSearchCompanyDetails.getJob_title());
                 viewHolderAdapter.dataDescription.setText(modelSearchCompanyDetails.getCompany_description());
                 viewHolderAdapter.dataLocation.setText(modelSearchCompanyDetails.getJob_location());
                 viewHolderAdapter.dataTypes.setText(modelSearchCompanyDetails.getJob_type());
 
-
                 //Start Activity new Intent on ViewHolder Adapter
                 //Code adapted from https://www.youtube.com/watch?v=vlXZ287Sf9A (Author: CodingCafe)
                 viewHolderAdapter.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d(tag, "SearchActivity onClick ViewHolder: Selected");
+                        Log.d(tag, "JobSearchActivity onClick ViewHolder: Selected");
 
                         final String userGetId = getRef(itemPosition).getKey();
 
                         //New activity intent passing
-                        Intent recyclerViewHolderPage = new Intent(SearchActivity.this, ActivityRecyclerPage.class);
+                        Intent recyclerViewHolderPage = new Intent(JobSearchActivity.this, ActivityRecyclerPage.class);
                         recyclerViewHolderPage.putExtra("userGetId", userGetId);
 
                         startActivity(recyclerViewHolderPage);
 
-
                     }
-
                 });
 
 
@@ -183,7 +194,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 //Picasso.get().load(model.get)
 
                 //Indeterminate loading until data completely retrieve
-                Log.d(tag, "SearchActivity null check: Check data is null or available");
+                Log.d(tag, "JobSearchActivity null check: Check data is null or available");
                 if (RecyclerOptions == null) {
                     progressBarLayout.setVisibility(View.VISIBLE);
 
@@ -206,13 +217,17 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         textViewMessageOne.setVisibility(View.INVISIBLE);
         textViewMessageTwo.setVisibility(View.INVISIBLE);
+        textViewMessageThree.setVisibility(View.INVISIBLE);
         recyclerView.setLayoutManager(layoutManager);
         RecyclerAdapter.startListening();
         recyclerView.setAdapter(RecyclerAdapter);
 
+        /*
+        --------------- RecyclerViewer (Show all available jobs in database) end here-------------------
+        */
 
         /*
-        -----------------Implementation of count number of data available and layout visibility---------------
+        -----------------Count number of data available in database and set layout visibility start here---------------
         */
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -229,11 +244,12 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     textViewMessageOne.setText(textViewOne);
                     textViewMessageOne.setVisibility(View.VISIBLE);
                     textViewMessageTwo.setVisibility(View.INVISIBLE);
+                    textViewMessageThree.setVisibility(View.INVISIBLE);
                     reloadButton.setVisibility(View.INVISIBLE);
                     reloadButton.setVisibility(View.INVISIBLE);
 
                 } else {
-                    textViewMessageOne.setText(textViewOne);
+                    textViewMessageOne.setText(textViewOne); // Check ME
 
                 }
             }
@@ -246,14 +262,16 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
     }
-
+     /*
+      -----------------Count number of data available in database and set layout visibility end here---------------
+     */
 
     /*
-    ----------RecyclerViewer search bar string validation------------
+    ----------RecyclerViewer search bar string validation (If string is empty)------------
     */
 
     private boolean checkString(String stringSearchText) {
-        Log.d(tag, "SearchActivity.java : Check string if empty");
+        Log.d(tag, "JobSearchActivity.java : Check string if empty");
         if (stringSearchText.isEmpty()) {
             return true; //if empty set error message
         } else {
@@ -271,11 +289,12 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         //get value of user input from search bar
         final String textSearch = searchBar.getText().toString();
 
-        //if empty
+        //Check string if empty
         if (checkString(textSearch)) {
             recyclerView.setVisibility(View.INVISIBLE);
             textViewMessageOne.setVisibility(View.INVISIBLE);
             textViewMessageTwo.setVisibility(View.INVISIBLE);
+            textViewMessageThree.setVisibility(View.INVISIBLE);
             reloadButton.setVisibility(View.VISIBLE);
 
             Toast.makeText(getApplicationContext(), "Enter a job name to search", Toast.LENGTH_LONG).show();
@@ -285,6 +304,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
             textViewMessageOne.setVisibility(View.VISIBLE);
             textViewMessageTwo.setVisibility(View.INVISIBLE);
+            textViewMessageThree.setVisibility(View.INVISIBLE);
             imageButton.setVisibility(View.VISIBLE);
             reloadButton.setVisibility(View.INVISIBLE);
 
@@ -292,6 +312,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             //Convert lowercase prefix letter to uppercase
             String capitalizedLetter = textSearch.substring(0, 1).toUpperCase() + textSearch.substring(1);
 
+            /*
+            -------Job search filter by job title start here------
+            */
             //Search query order by job_title
             Query text = databaseReference.orderByChild("job_title").startAt(capitalizedLetter).endAt(capitalizedLetter + "\uf8ff");//unicode string to enable searching
 
@@ -315,9 +338,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                         for (DataSnapshot snapshot : snapshotJobTitle.getChildren()) { //start array list of data
                             dataList.add(snapshot.getValue(SearchCompanyDetails.class));//add the string to arraylist from models search company details
                         }
-
                         //onViewHolderOnClick.OnViewHolder();
-
 
                         //if query of user input data not available
                     } else {
@@ -327,26 +348,22 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                         reloadButton.setVisibility(View.VISIBLE);
                     }
                     //Set adapter and array list
-                    Recycler_Viewer_Adapter Adapter = new Recycler_Viewer_Adapter(dataList, getApplicationContext(), SearchActivity.this);
+                    Recycler_Viewer_Adapter Adapter = new Recycler_Viewer_Adapter(dataList, getApplicationContext(), JobSearchActivity.this);
                     recyclerView.setAdapter(Adapter);
                     Adapter.notifyDataSetChanged();
 
-
                     //TextView message one string replacement
                     if (countJob <= 1) {
-
                         textViewOne = getString(R.string.allJob, integer);
                         textViewOne = textViewOne.replace("jobs", "job");
                         textViewMessageOne.setText(textViewOne);
 
                     } else {
-
                         //code adapted from https://developer.android.com/guide/topics/resources/string-resource.html#Plurals-->
                         textViewOne = getString(R.string.allJob, integer);
                         textViewOne = textViewOne.replace("jobss", "jobs");
                         textViewMessageOne.setText(textViewOne);
                     }
-
                 }
 
                 @Override
@@ -360,14 +377,13 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     /*
-    --------------Reload data back to recyclerViewer-------------
+    --------------Reload existing data available back to recyclerViewer start here-------------
     */
     public void reloadData() {
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
 
                 countJob = (int) dataSnapshot.getChildrenCount();
                 String integer = Integer.toString(countJob);
@@ -380,6 +396,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 textViewMessageOne.setText(reloadTextView);
                 textViewMessageOne.setVisibility(View.VISIBLE);
                 textViewMessageTwo.setVisibility(View.INVISIBLE);
+                textViewMessageThree.setVisibility(View.INVISIBLE);
 
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
                 recyclerView.setLayoutManager(layoutManager);
@@ -394,17 +411,19 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
     }
+    /*
+    --------------Reload existing data available back to recyclerViewer end here-------------
+    */
 
 
     /*
-    ------Search filter based on job location-------
+    ----------Filter dialog box(include spinner for both job filter by district and job filter by job type) start here-------
     */
-
     public void OnClickFilter() {
 
-        //Query by Job Location
-        builder = new AlertDialog.Builder(SearchActivity.this);
+        builder = new AlertDialog.Builder(JobSearchActivity.this);
         builder.setTitle("Job Filter");
+
 
         //inflate layout
         final LayoutInflater layout = this.getLayoutInflater();
@@ -416,12 +435,14 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
 
         //Code adapted from https://android--code.blogspot.com/2015/08/android-spinner-hint.html (From URL Link) ,author Saiful Alam
-        locationList = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ArrayListAdapter.jobLocation) {
+        //Disable the first array in spinner (The dropdown list for filter job by district )
+        locationList = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ArrayListAdapter.jobDistrict) {
 
             @Override
             public boolean isEnabled(int stringListLocation) {
 
                 return stringListLocation != 0;
+
             }
 
             @Override
@@ -440,8 +461,16 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 return dropDownView; //return result
             }
+
         };
 
+
+        //locationList = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, ArrayListAdapter.jobLocation);
+        locationList.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerJobDistrict.setAdapter(locationList);
+
+        //Code adapted from https://android--code.blogspot.com/2015/08/android-spinner-hint.html (From URL Link) ,author Saiful Alam
+        //Disable the first array in spinner(The dropdown list for filter job by job type)
         jobTypesList = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ArrayListAdapter.jobTypes) {
 
             @Override
@@ -467,17 +496,49 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 return dropDownView; //return result
             }
 
-
         };
 
+        /*--To avoid user from applying multiply filter as the filter only work once at the time(Multiple filter for future improvement)--*/
+        //Code adpated from https://stackoverflow.com/questions/12108893/set-onclicklistener-for-spinner-item
+       // locationList = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,ArrayListAdapter.jobDistrict);
+        spinnerJobDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedJobDistrict = spinnerJobDistrict.getItemAtPosition(position).toString();
+                if(selectedJobDistrict.matches("BruneiMuara|Belait|Tutong|Temburong")){
+                    spinnerJobTypes.setEnabled(false);
 
-        //spinner array list adapter
-        //locationList = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, ArrayListAdapter.jobLocation);
-        locationList.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerJobDistrict.setAdapter(locationList);
+                }else{
+                    spinnerJobTypes.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         jobTypesList.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerJobTypes.setAdapter(jobTypesList);
         builder.setView(viewLayout);// Set layout
+
+        spinnerJobTypes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedJobType = spinnerJobTypes.getItemAtPosition(position).toString();
+                if(selectedJobType.matches("FullTime|PartTime|Internship")){
+                    spinnerJobDistrict.setEnabled(false);
+                }else{
+                    spinnerJobTypes.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         //Implement dialog with cancel to exit
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -486,109 +547,59 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 dialog.cancel();
             }
         });
-        //Implement dialog with apply filter to start searching
+
+        //Implement dialog with apply filter to send the string of user query to filter method
         builder.setPositiveButton("Apply Filter", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                if (spinnerJobDistrict.getSelectedItem().toString().equals("Show jobs based on district")) {
-                    Toast.makeText(getApplicationContext(), spinnerJobDistrict.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
+                String selectedJobDistrict = spinnerJobDistrict.getSelectedItem().toString();
+                if (selectedJobDistrict.equals("Show jobs based on district"))
+                {
+                    Toast.makeText(getApplicationContext(),"No job district selected", Toast.LENGTH_LONG).show();
+
+                } else if(spinnerJobDistrict.getSelectedItem().toString().matches("BruneiMuara|Belait|Tutong|Temburong")){
+                   /*--For filter by job district
+                    Convert the selected value from array to string--*/
+                    //String jobByLocation = spinnerJobDistrict.getSelectedItem().toString();
                     dialog.dismiss();
+                    ApplyFilterJobDistrict(selectedJobDistrict); //Send the string to ApplyFilter method
+
                 }
 
-                if (spinnerJobTypes.getSelectedItem().toString().equals("Job type")) {
+                //Spinner for filter by job types validation
+                String selectedJobType = spinnerJobTypes.getSelectedItem().toString();
+                if(selectedJobType.equals("Show based on job types"))
+                {
+                    Toast.makeText(getApplicationContext(),"No data selected",Toast.LENGTH_SHORT).show();
+
+                   //code adapted from https://stackoverflow.com/questions/10208052/string-equals-with-multiple-conditions-and-one-action-on-result
+                }else if(spinnerJobTypes.getSelectedItem().toString().matches("FullTime|PartTime|Internship")){
                     Toast.makeText(getApplicationContext(), spinnerJobTypes.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
                     dialog.dismiss();
+                    ApplyFilterJobType(selectedJobType); //Send string to ApplyFilterJobType if string matches
                 }
 
-                String jobByLocation = spinnerJobDistrict.getSelectedItem().toString();
-                ApplyFilter(jobByLocation);
-                String jobByTypes = spinnerJobTypes.getSelectedItem().toString();
-                ApplyFilter(jobByTypes);
                 Log.d(tag, "Apply filter: Filter started success ");
             }
 
         });
-        //Show the dialog
+        //Show the dialog box
         builder.show();
 
-
-        /*---Chip group---*/
-       /* final ChipGroup group = viewLayout.findViewById(R.id.chipGroup);
-        //Create the autocomplete string based on array adapter
-        locationList = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, ArrayListAdapter.jobLocation);
-        searchFilterTextView.setAdapter(locationList);
-
-        //When user click the autocomplete string itappear into chipgroup
-        searchFilterTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Remove string when first string is input
-                searchFilterTextView.setText("");
-
-                //Chip groups begin
-                Chip chip = (Chip) layout.inflate(R.layout.activity_tag, null, false);
-                //Set text and get text from autocomplete
-                chip.setText(((TextView) view).getText());
-                //Enable chip to close upon user click
-                chip.setOnCloseIconClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View layout) {
-                        group.removeView(layout);
-                    }
-
-                });
-                group.addView(chip);
-            }
-        });
-        //Set both chip gropu and editext autocomplete appear in dialog
-        dialog.setView(viewLayout);
-        //Implement dialog with cancel to exit
-        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        //Implement dialog with apply filter to start searching
-        dialog.setPositiveButton("Apply Filter", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                stringList = new ArrayList<>();
-                StringBuilder filter = new StringBuilder("");
-                //Chip group
-                for (int a = 0; a < group.getChildCount(); a++) {
-
-                    Chip chip = (Chip) group.getChildAt(a);
-                    stringList.add(chip.getText().toString());// filter and take the string to chip group
-                    //Sort filter of string
-                    Collections.sort(stringList);
-
-                    //convert the arraylist to string
-                    for (String list : stringList) {
-                        filter.append(list).append(",");//append the comma in between the list
-                    }
-                    filter.setLength(filter.length() - 1);//remove the comma in the end of the list
-
-                }
-                //After string format is complete
-                //Pass the string to start filter the user query
-                String name = filter.toString();
-                ApplyFilter(name);
-                Log.d(tag, "Apply filter: Filter started ");
-            }
-        });
-        //Show the dialog
-        dialog.show();*/
-
     }
+     /*
+    ----------Filter dialog box(include spinner for both job filter by district and job filter by job type) end here-------
+    */
 
-    public void ApplyFilter(final String name) {
 
-        //Query by Job Location (First Query)
-        Query stringJobLocation = databaseReference.orderByChild("job_location").startAt(name).endAt(name + "\uf8ff");//unicode string to enable searching
+    /*
+    -----Continuation for filter dialog box(sending user filter query based on job filter by district and job filter by job type) start here-----
+    */
+    private void ApplyFilterJobDistrict(final String jobByLocation) {
+
+        //First query filter job based on brunei district (Stored in ArrayListAdapter)
+        final Query stringJobLocation = databaseReference.orderByChild("job_location").startAt(jobByLocation).endAt(jobByLocation + "\uf8ff");//unicode string to enable searching
         stringJobLocation.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot data) {
@@ -596,46 +607,46 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 countJob = (int) data.getChildrenCount();
                 String integer = Integer.toString(countJob);
                 //code adapted from https://developer.android.com/guide/topics/resources/string-resource.html#Plurals-->
-                textViewTwo = getString(R.string.jobLocation, integer, name);
+                textViewTwo = getString(R.string.jobLocation, integer, jobByLocation);
 
                 if (data.exists()) {
 
-                    dataList = new ArrayList<>();
+                    dataList = new ArrayList<>();// include only new array list at given user query
                     //Clear array list
                     //dataList.clear();
 
                     textViewMessageTwo.setText(textViewTwo);
                     textViewMessageTwo.setVisibility(View.VISIBLE);
                     textViewMessageOne.setVisibility(View.INVISIBLE);
+                    textViewMessageThree.setVisibility(View.INVISIBLE);
 
                     for (DataSnapshot snapshot : data.getChildren()) { //start array list of data
                         dataList.add(snapshot.getValue(SearchCompanyDetails.class));//add the string to arraylist from models search company details
                     }
 
-                    Recycler_Viewer_Adapter Adapter = new Recycler_Viewer_Adapter(dataList, getApplicationContext(), SearchActivity.this);  //Set adapter and array list
+                    Recycler_Viewer_Adapter Adapter = new Recycler_Viewer_Adapter(dataList, getApplicationContext(), JobSearchActivity.this);  //Set adapter and array list
                     recyclerView.setAdapter(Adapter);
                     Adapter.notifyDataSetChanged();
 
 
                 } else {
-                    Toast.makeText(getApplicationContext(), "Sorry, no job are available in" + name, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Sorry, no job are available for" + jobByLocation, Toast.LENGTH_SHORT).show();
                     textViewMessageTwo.setText(textViewTwo);
                     reloadButton.setVisibility(View.VISIBLE);
                 }
 
-                /*
-                ----TextView message two string replacement---
-                */
+
+                //TextView message two string replacement
                 if (countJob <= 1) {
 
-                    textViewTwo = getString(R.string.jobLocation, integer, name);
+                    textViewTwo = getString(R.string.jobLocation, integer, jobByLocation);
                     textViewTwo = textViewTwo.replace("jobs", "job");
                     textViewMessageTwo.setText(textViewTwo);
 
                 } else {
 
                     //code adapted from https://developer.android.com/guide/topics/resources/string-resource.html#Plurals-->
-                    textViewTwo = getString(R.string.jobLocation, integer, name);
+                    textViewTwo = getString(R.string.jobLocation, integer, jobByLocation);
                     textViewTwo = textViewTwo.replace("jobss", "jobs");
                     textViewMessageTwo.setText(textViewTwo);
                 }
@@ -643,21 +654,26 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "Please make sure you have internet connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Database error, no data are retrieved from database", Toast.LENGTH_SHORT).show();
 
             }
         });
 
-        //Second jobfilter by JobTypes
-        Query stringJobTypes = databaseReference.orderByChild("job_type").startAt(name).endAt(name + "\uf8ff");//unicode string to enable searching
+    }
+
+    //Filter based on query start here (include filter by job district and filter by job type)
+    private void ApplyFilterJobType(final String jobByTypes) {
+
+        //Second query based on job filter by the job type
+        Query stringJobTypes = databaseReference.orderByChild("job_type").startAt(jobByTypes).endAt(jobByTypes + "\uf8ff");//unicode string to enable searching
         stringJobTypes.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot data) {
 
                 countJob = (int) data.getChildrenCount();
-                String integer = Integer.toString(countJob);
+                String int_Count_JobType = Integer.toString(countJob);
                 //code adapted from https://developer.android.com/guide/topics/resources/string-resource.html#Plurals-->
-                textViewTwo = getString(R.string.jobLocation, integer, name);
+                textViewThree = getString(R.string.jobType,int_Count_JobType, jobByTypes);
 
                 if (data.exists()) {
 
@@ -665,55 +681,55 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     //Clear array list
                     //dataList.clear();
 
-                    textViewMessageTwo.setText(textViewTwo);
-                    textViewMessageTwo.setVisibility(View.VISIBLE);
+                    textViewMessageThree.setText(textViewThree);
+                    textViewMessageThree.setVisibility(View.VISIBLE);
                     textViewMessageOne.setVisibility(View.INVISIBLE);
+                    textViewMessageTwo.setVisibility(View.INVISIBLE);
 
                     for (DataSnapshot snapshot : data.getChildren()) { //start array list of data
                         dataList.add(snapshot.getValue(SearchCompanyDetails.class));//add the string to arraylist from models search company details
                     }
 
-                    Recycler_Viewer_Adapter Adapter = new Recycler_Viewer_Adapter(dataList, getApplicationContext(), SearchActivity.this);  //Set adapter and array list
+                    Recycler_Viewer_Adapter Adapter = new Recycler_Viewer_Adapter(dataList, getApplicationContext(), JobSearchActivity.this);  //Set adapter and array list
                     recyclerView.setAdapter(Adapter);
                     Adapter.notifyDataSetChanged();
 
-
                 } else {
-                    Toast.makeText(getApplicationContext(), "Sorry, no job are available in" + name, Toast.LENGTH_SHORT).show();
-                    textViewMessageTwo.setText(textViewTwo);
+                    Toast.makeText(getApplicationContext(), "Sorry, there are no job type available for" + jobByTypes, Toast.LENGTH_SHORT).show();
+                    textViewMessageThree.setText(textViewThree);
                     reloadButton.setVisibility(View.VISIBLE);
+
                 }
 
                  /*
-                ----TextView message two string replacement---
+                ------TextView message two string replacement-------
                 */
                 if (countJob <= 1) {
 
-                    textViewTwo = getString(R.string.jobLocation, integer, name);
-                    textViewTwo = textViewTwo.replace("jobs", "job");
-                    textViewMessageTwo.setText(textViewTwo);
+                    textViewThree = getString(R.string.jobType, int_Count_JobType, jobByTypes);
+                    textViewThree = textViewThree.replace("jobs", "job");
+                    textViewMessageThree.setText(textViewThree);
 
                 } else {
 
                     //code adapted from https://developer.android.com/guide/topics/resources/string-resource.html#Plurals-->
-                    textViewTwo = getString(R.string.jobLocation, integer, name);
-                    textViewTwo = textViewTwo.replace("jobss", "jobs");
-                    textViewMessageTwo.setText(textViewTwo);
+                    textViewThree = getString(R.string.jobType, int_Count_JobType, jobByTypes);
+                    textViewThree = textViewThree.replace("jobss", "jobs");
+                    textViewMessageThree.setText(textViewThree);
                 }
             }
 
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(), "Please make sure you have internet connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Database error, no data are retrieved from database", Toast.LENGTH_SHORT).show();
             }
         });
     }
-
-
-    /*
-    --------Recycler adapter--------- (Check me again)
+     /*
+    -----Continuation for filter dialog box(sending user filter query based on job filter by district and job filter by job type) end here-----
     */
+
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -721,7 +737,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         if (RecyclerAdapter != null) {
             RecyclerAdapter.startListening();
         }
-
     }
 
     @Override
@@ -729,7 +744,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         super.onStop();
         if (RecyclerAdapter != null) {
             RecyclerAdapter.stopListening();
-
         }
     }
 
@@ -749,8 +763,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         switch (userTrigger.getId()) {
 
             case R.id.searchjob_Backbutton:
-                Intent backbutton = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(backbutton);
+                Intent backButton = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(backButton);
                 finish();
                 break;
 
@@ -769,11 +783,26 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    //Code adapted from https://www.youtube.com/watch?v=69C1ljfDvl0 (2019,CodingWithMitch)
+    //View holder onClick
+    @Override
+    public void OnViewHolderClick(final int onSetPosition) {
+
+        Log.d(tag, "OnViewHolderClick started: Clicked " + onSetPosition);
+
+        //Redirect user to new page upon onClick event
+        Intent recyclerViewHolderPage = new Intent(JobSearchActivity.this, ActivityRecyclerPage.class);
+        // databaseReference = FirebaseDatabase.getInstance().getReference("Company");
+        recyclerViewHolderPage.putExtra("SelectedJob", dataList.get(onSetPosition)); //is based on array postion
+        startActivity(recyclerViewHolderPage);
+    }
+
+}
 
     // @Override
     // public void OnViewHolder(int onSetPosition) {
     // Log.d(tag,"ViewHolder OnClick begin: Started"+ onSetPosition);
-    // Toast.makeText(SearchActivity.this,"Selected"+ onSetPosition,Toast.LENGTH_LONG).show();
+    // Toast.makeText(JobSearchActivity.this,"Selected"+ onSetPosition,Toast.LENGTH_LONG).show();
 
     //dataList.get(onSetPosition);
 
@@ -781,7 +810,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     //final String userGetId = dataList.get(onSetPosition).getJob_title();
 
     //New activity intent passing
-    //Intent recyclerViewHolderPage = new Intent(SearchActivity.this,ActivityRecyclerPage.class);
+    //Intent recyclerViewHolderPage = new Intent(JobSearchActivity.this,ActivityRecyclerPage.class);
     //recyclerViewHolderPage.putExtra("");
 
     //startActivity(recyclerViewHolderPage);
@@ -793,25 +822,11 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     //  }
 
 
-    //Code adapted from https://www.youtube.com/watch?v=69C1ljfDvl0 (2019,CodingWithMitch)
-    //View holder onClick
-    @Override
-    public void OnViewHolderClick(final int onSetPosition) {
 
-        Log.d(tag, "OnViewHolderClick started: Clicked " + onSetPosition);
 
-        //Passing data from Search to ActivityRecylerPage
-        Intent recyclerViewHolderPage = new Intent(SearchActivity.this, ActivityRecyclerPage.class);
-        // databaseReference = FirebaseDatabase.getInstance().getReference("Company");
-        recyclerViewHolderPage.putExtra("SelectedJob", dataList.get(onSetPosition)); //is based on array postion
-        startActivity(recyclerViewHolderPage);
-    }
-}
 
 
     // Toast.makeText(getApplicationContext(), "You select " + onSetPosition, Toast.LENGTH_LONG).show();
-
-
 
     //databaseReference.addValueEventListener(new ValueEventListener() {
     // @Override
@@ -827,12 +842,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     // Log.d(tag, "get" + id);
 
     // }
-
-
-
-
-
-
 
 
 //Search

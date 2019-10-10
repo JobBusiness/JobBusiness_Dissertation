@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainColor"
-    tools:context=".SearchActivity">
+    tools:context=".JobSearchActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/searchjobToolbar"
@@ -103,7 +103,7 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/available_Job"
+            android:id="@+id/textView_Available_Job"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/allJob"
@@ -117,10 +117,24 @@
             app:layout_constraintBottom_toTopOf="@+id/recyclerViewer"/>
 
          <TextView
-            android:id="@+id/location_Job"
+            android:id="@+id/textView_JobDistrict"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/jobLocation"
+            android:fontFamily="sans-serif"
+            android:textSize="15sp"
+            android:layout_marginBottom="5dp"
+            android:textAlignment="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchView_RelativeLayout"
+            app:layout_constraintBottom_toTopOf="@+id/recyclerViewer"/>
+
+         <TextView
+            android:id="@+id/textView_JobType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/jobType"
             android:fontFamily="sans-serif"
             android:textSize="15sp"
             android:layout_marginBottom="5dp"
@@ -140,7 +154,7 @@
            app:layout_constraintBottom_toBottomOf="parent"
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toBottomOf="@+id/available_Job">
+           app:layout_constraintTop_toBottomOf="@+id/textView_Available_Job">
         </androidx.recyclerview.widget.RecyclerView>
 
 
